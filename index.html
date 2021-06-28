@@ -47,9 +47,21 @@
 
 		<div id="courseName">Rookie Course</div>
 
-		<div id="optionsContainer">
-			<span id="button" onclick="setRandomCourse()">New course!</span>
+		<div id="flexContainer">
+			<div id="optionsContainer">
+				<span id="button" onclick="setRandomCourse()">New course! <br /> <img id="randomImg" src="img/random.png"> </span>
+			</div>
 		</div>
+
+		<!--div class="outer">
+			<div class="middle">
+				<div class="inner">
+					<div id="optionsContainer">
+						<span id="button" onclick="setRandomCourse()">New course! <br /> <img id="randomImg" src="img/random.png"> </span>
+					</div>
+				</div>
+			</div>
+		</div-->
 
 		<!--div id="courseImgContainer">
 			<img id="courseImg" src="img/1-Rookie_Course.png">
@@ -78,17 +90,19 @@
 		}
 
 		#container {
+			display: flex;
+			flex-direction: column;
+
 			height: 100%;
 			width: 100%;
 
 			text-align: center;
 
-
 			background-image: url(img/dots.png);
 		}
 
 		#courseName {
-			font-size: 55px;
+			font-size: 3.5rem;
 			padding: 10px 0;
 
 			font-family: arial;
@@ -97,16 +111,27 @@
 			text-shadow: 3px 3px 4px #202020;
 		}
 
+		#flexContainer {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-evenly;
+
+			height: 100%;
+		}
+
 		#optionsContainer {
-			text-align: center;
 			margin-top: 30px;
+			text-align: center;
 		}
 
 		#button {
-			padding: 5px;
+			display: inline-block;
+			padding: 4px;
+			padding-top: 1px; /* Needed because text seems to have hidden padding */
 
 			font-family: arial;
-			font-size: 30px;
+			font-size: 1.6rem;
+			text-align: start;
 			color: #eee;
 			cursor: pointer;
 
@@ -123,9 +148,21 @@
 			box-shadow: 0px 0px 5px 1px #000;
 		}
 
+		#randomImg {
+			display: block;
+			height: 300px;
+		}
+
+		@media only screen and (hover: none) and (pointer: coarse) {
+			#courseName {
+				font-size: 5.5rem;
+			}
+		}
+
+		/*
 		#courseImgContainer {
 			width: 100%;
-			height: calc(100% - 84px); /* 100% - (#courseName height) */
+			height: calc(100% - 84px); /* 100% - (#courseName height) */ /*
 
 			box-sizing: border-box;
 			text-align: center;
@@ -137,6 +174,7 @@
 
 			box-sizing: border-box;
 		}
+		*/
 	</style>
 
 	<script src="mersenne-twister.js"></script>
