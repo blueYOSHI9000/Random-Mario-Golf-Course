@@ -1,0 +1,221 @@
+<!doctype html>
+
+<html lang="en" id="htmlElement">
+<head>
+	<meta charset="utf-8">
+
+	<title>Random Mario Golf Course</title>
+	<meta name="description" content="A simple website to select a random Mario Golf: Super Rush course.">
+	<meta name="author" content="blueYOSHI">
+
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Random Mario Golf Course">
+	<meta property="og:description" content="A simple website to select a random Mario Golf: Super Rush course.">
+	<!--meta property="og:image" content="https://raw.githubusercontent.com/blueYOSHI9000/MarioPartyOverlay/master/img/favicon/icon-120x120.png"-->
+	<meta property="og:locale" content="en_US">
+	<!--meta property="og:url" content="https://blueyoshi9000.github.io/MarioPartyOverlay"-->
+
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Random Mario Golf Course">
+	<meta name="twitter:description" content="A simple website to select a random Mario Golf: Super Rush course.">
+	<!--meta name="twitter:image" content="https://raw.githubusercontent.com/blueYOSHI9000/MarioPartyOverlay/master/img/favicon/icon-120x120.png"-->
+	<!--meta name="twitter:site" content="@yoshisrc"-->
+	<meta name="twitter:creator" content="@yoshisrc">
+
+	<!--meta name="google-site-verification" content="L7wGU_sd9ri9CM2r9zhWhwq2pLkPtuemouRzyRFudC8" /-->
+
+	<!--meta name="viewport" content="width=815, initial-scale=.5"-->
+	<!--link rel="manifest" href="mpo.webmanifest" /-->
+
+	<!--link rel="apple-touch-icon" sizes="152x152" href="img/favicon/apple-touch-icon.png"-->
+	<link rel="icon" type="image/png" sizes="32x32" href="img/favicon_32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="img/favicon_16x16.png">
+	<meta name="msapplication-TileColor" content="#2d89ef">
+	<meta name="theme-color" content="#4598fd">
+	<meta name="theme-color-light" content="#4598fd">
+	<meta name="theme-color-dark" content="#4598fd"-->
+
+	<!--link rel="stylesheet" href="style.css"-->
+</head>
+
+<body>
+	<noscript>
+		<span> Javascript is required for MPO to work. <br> MPO does not save or send any information anywhere. <br> It only saves stats & settings in your browser which no other website can access. </span>
+	</noscript>
+
+	<div id="container">
+
+		<div id="courseName">Rookie Course</div>
+
+		<div id="optionsContainer">
+			<span id="button" onclick="setRandomCourse()">New course!</span>
+		</div>
+
+		<!--div id="courseImgContainer">
+			<img id="courseImg" src="img/1-Rookie_Course.png">
+		</div-->
+
+	</div>
+
+	<style>
+		html, body {
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			background-image: url(img/1-Rookie_Course.png);
+			background-position-x: center;
+			background-position-y: center;
+			background-repeat-x: no-repeat;
+			background-repeat-y: no-repeat;
+			background-attachment: fixed;
+		-webkit-background-size: cover;
+		   -moz-background-size: cover;
+				background-size: cover;
+		}
+
+		#container {
+			height: 100%;
+			width: 100%;
+
+			text-align: center;
+
+
+			background-image: url(img/dots.png);
+		}
+
+		#courseName {
+			font-size: 55px;
+			padding: 10px 0;
+
+			font-family: arial;
+			font-weight: 300;
+			color: #eee;
+			text-shadow: 3px 3px 4px #202020;
+		}
+
+		#optionsContainer {
+			text-align: center;
+			margin-top: 30px;
+		}
+
+		#button {
+			padding: 5px;
+
+			font-family: arial;
+			font-size: 30px;
+			color: #eee;
+			cursor: pointer;
+
+			background: linear-gradient(90deg, #010101 30%, #565354 90%);
+			box-shadow: 0px 0px 5px 1px #000;
+
+		-webkit-user-select: none;
+		   -moz-user-select: none;
+			-ms-user-select: none;
+				user-select: none;
+		}
+		#button:hover {
+			background: linear-gradient(90deg, #013cee 60%, #020e6e 99%);
+			box-shadow: 0px 0px 5px 1px #000;
+		}
+
+		#courseImgContainer {
+			width: 100%;
+			height: calc(100% - 84px); /* 100% - (#courseName height) */
+
+			box-sizing: border-box;
+			text-align: center;
+		}
+		#courseImg {
+			max-width: 100%;
+			max-height: 100%;
+			padding: 5px;
+
+			box-sizing: border-box;
+		}
+	</style>
+
+	<script src="mersenne-twister.js"></script>
+	<script type="text/javascript">
+		/* Gets a random number from 0 (inclusive) up to a max number (excluding).
+
+		Args:
+			max (number): The max number. If max is 5 then the possible outcomes are 0, 1, 2, 3, 4.
+		*/
+		function getRandomInt (max) {
+			var num = Math.floor(Math.random() * max);
+			console.log('[RNG] Result: ' + num);
+			return num;
+		}
+
+		/* Sets the course name.
+
+		Args:
+			name (string): The course name to be set.
+		*/
+		function setCourseName (name) {
+			document.getElementById('courseName').innerText = name;
+		}
+
+		/* Sets the course background.
+
+		Args:
+			file (string): The filename of the background to be used (MUST include the file extension). Only checks in the img directory.
+		*/
+		function setCourseBackground (file) {
+			document.querySelector('body').style.backgroundImage = 'url(img/' + file + ')';
+		}
+
+		var lastResult = 99;
+
+		/* Gets a random course and sets the name & background. */
+		function setRandomCourse () {
+			var num = NaN;
+
+			//loop until a new number is found to avoid repeats. 20 is a failsafe to make sure it isn't stuck in an infinite loop.
+			for (let i = 0; i < 20; i++) {
+				num = getRandomInt(6);
+
+				if (num != lastResult) {
+					lastResult = num;
+					break;
+				}
+			}
+
+			switch (num) {
+				case 0:
+					setCourseName('Rookie Course');
+					setCourseBackground('1-Rookie_Course.png');
+					break;
+				case 1:
+					setCourseName('Bonny Greens');
+					setCourseBackground('2-Bonny_Greens.png');
+					break;
+				case 2:
+					setCourseName('Ridgerock Lake');
+					setCourseBackground('3-Ridgerock_Lake.png');
+					break;
+				case 3:
+					setCourseName('Balmy Dunes');
+					setCourseBackground('4-Balmy_Dunes.png');
+					break;
+				case 4:
+					setCourseName('Wildweather Woods');
+					setCourseBackground('5-Wildweather_Woods.png');
+					break;
+				case 5:
+					setCourseName('Bowser Highlands');
+					setCourseBackground('6-Bowser_Highlands.png');
+					break;
+
+			}
+		}
+
+		window.onload = setRandomCourse();
+	</script>
+</body>
+</html>
