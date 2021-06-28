@@ -43,30 +43,28 @@
 		<span> Javascript is required for MPO to work. <br> MPO does not save or send any information anywhere. <br> It only saves stats & settings in your browser which no other website can access. </span>
 	</noscript>
 
-	<div id="container">
+	<div id="contentContainer">
+		<div id="content">
 
-		<div id="courseName">Rookie Course</div>
+			<div id="courseName">Rookie Course</div>
 
-		<div id="flexContainer">
-			<div id="optionsContainer">
-				<span id="button" onclick="setRandomCourse()">New course! <br /> <img id="randomImg" src="img/random.png"> </span>
-			</div>
-		</div>
-
-		<!--div class="outer">
-			<div class="middle">
-				<div class="inner">
-					<div id="optionsContainer">
-						<span id="button" onclick="setRandomCourse()">New course! <br /> <img id="randomImg" src="img/random.png"> </span>
-					</div>
+			<div id="flexContainer">
+				<div id="optionsContainer">
+					<span id="button" onclick="setRandomCourse()">New course! <br /> <img id="randomImg" src="img/random.png"> </span>
 				</div>
 			</div>
-		</div-->
 
-		<!--div id="courseImgContainer">
-			<img id="courseImg" src="img/1-Rookie_Course.png">
-		</div-->
+			<!--div id="courseImgContainer">
+				<img id="courseImg" src="img/1-Rookie_Course.png">
+			</div-->
 
+		</div>
+
+		<div id="credits">
+			All characters, products and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them. <br />
+			Favicon is official art owned by Nintendo, found on mariowiki.com. Other media is created by or inspired by offcially published media by Nintendo. <br />
+			Anything that's not directly credited is either owned by Nintendo or made by a code contributor. Code and list of it's contributors is found publically on github.com.
+		</div>
 	</div>
 
 	<style>
@@ -89,7 +87,16 @@
 				background-size: cover;
 		}
 
-		#container {
+		#contentContainer {
+			height: 100%;
+			width: 100%;
+
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+		}
+
+		#content {
 			display: flex;
 			flex-direction: column;
 
@@ -98,8 +105,6 @@
 			max-height: 1000px;
 
 			text-align: center;
-
-			background-image: url(img/dots.png);
 		}
 
 		#courseName {
@@ -154,12 +159,26 @@
 			height: 300px;
 		}
 
+		#credits {
+			width: 100%;
+			margin-bottom: 2px;
+
+			font-family: arial;
+			font-size: 0.5rem;
+			color: #fff;
+			text-align: center;
+			text-shadow: 3px 3px 4px #202020;
+		}
+
 		@media only screen and (hover: none) and (pointer: coarse) {
 			#courseName {
 				font-size: 5.5rem;
 			}
 			#button {
 				font-size: 3rem;
+			}
+			#credits {
+				font-size: 1.3rem;
 			}
 		}
 
