@@ -441,7 +441,28 @@
 			}
 		}
 
+		/* Preloads an image.
+
+		Args:
+			filePath (String): The Path to the file.
+		*/
+		function preloadImage (filePath) {
+			var img = new Image();
+			img.src = filePath;
+		}
+
+		/* Preloads all required images. Images that are visible at all times don't need to be preloaded. */
+		function preloadAllImages () {
+			preloadImage('img/1-Rookie_Course.png');
+			preloadImage('img/2-Bonny_Greens.png');
+			preloadImage('img/3-Ridgerock_Lake.png');
+			preloadImage('img/4-Balmy_Dunes.png');
+			preloadImage('img/5-Wildweather_Woods.png');
+			preloadImage('img/6-Bowser_Highlands.png');
+		}
+
 		window.onload = setNewCourse();
+		window.onload = preloadAllImages();
 	</script>
 </body>
 </html>
