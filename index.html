@@ -40,7 +40,22 @@
 
 <body>
 	<noscript>
-		<span> Javascript is required for MPO to work. <br> MPO does not save or send any information anywhere. <br> It only saves stats & settings in your browser which no other website can access. </span>
+		<div id="noScript"> Javascript is required for <i>Random Mario Golf Course</i> to work. <br /> No cookies are used in any way whatsoever. Nothing is ever sent to any kind of server either (aside from loading the site and it's images). </div>
+		<style>
+			#noScript {
+					margin-top: 30px;
+
+					font-family: arial;
+					color: #fff;
+					font-size: 1.6rem;
+					font-weight: 300;
+					text-align: center;
+					text-shadow: 3px 3px 4px #202020;
+			}
+			#contentContainer {
+				display: none !important;
+			}
+		</style>
 	</noscript>
 
 	<div id="contentContainer">
@@ -50,7 +65,7 @@
 
 			<div id="flexContainer">
 				<div id="optionsContainer">
-					<span id="button" onclick="setRandomCourse()">New course! <br /> <img id="randomImg" src="img/random.png"> </span>
+					<span id="button" onclick="setNewCourse()">New course! <br /> <img id="randomImg" src="img/random.png"> </span>
 				</div>
 			</div>
 
@@ -180,6 +195,9 @@
 			#credits {
 				font-size: 1.3rem;
 			}
+			#noScript {
+				font-size: 4rem !important;
+			}
 		}
 
 		/*
@@ -200,7 +218,6 @@
 		*/
 	</style>
 
-	<script src="mersenne-twister.js"></script>
 	<script type="text/javascript">
 		/* Gets a random number from 0 (inclusive) up to a max number (excluding).
 
@@ -209,7 +226,7 @@
 		*/
 		function getRandomInt (max) {
 			var num = Math.floor(Math.random() * max);
-			console.log('[RNG] Result: ' + num);
+			//console.log('[RMGC] getRandomInt Result: ' + num);
 			return num;
 		}
 
@@ -220,6 +237,7 @@
 		*/
 		function setCourseName (name) {
 			document.getElementById('courseName').innerText = name;
+			console.log('[RMGC] Set Course name to "' + name + '".');
 		}
 
 		/* Sets the course background.
@@ -231,20 +249,157 @@
 			document.querySelector('body').style.backgroundImage = 'url(img/' + file + ')';
 		}
 
-		var lastResult = 99;
+		// keeps track of the last 10 courses (note that it's reversed so the latest reuslt is at the end)
+		var lastResults = [];
 
-		/* Gets a random course and sets the name & background. */
-		function setRandomCourse () {
-			var num = NaN;
+		/* Adds the last result to the lastResults array and keeps it at 10 items.
 
+		Args:
+			result (number): Item to be added to lastResults.
+		*/
+		function addLastResult (result) {
+			var len = lastResults.push(result);
+			if (len >= 10) {
+				lastResults.splice(0, 1);
+			}
+		}
+
+		/* Gets a random weighted course. Meaning the last few courses are less likely to get chosen again.
+
+		Returns:
+			A random number between 0 and 5 that can then be assigned to a course.
+			Returns false instead if the function failed.
+		*/
+		function getRandomCourseWeighted () {
+			var chances = {
+				c0: 13,
+				c1: 13,
+				c2: 25,
+				c3: 25,
+				c4: 25,
+				c5: 25
+			};
+
+			//amount of courses - used to loop through chances
+			var courseAmount = 6;
+
+			var chanceItemName = null;
+
+			//make the last chosen course impossible to get again
+			if (lastResults.length >= 1) {
+				chanceItemName = 'c' + lastResults[lastResults.length - 1];
+				chances[chanceItemName] = 0;
+			}
+
+			//decrease odds for the last 4 courses after the last one
+			if (lastResults.length >= 2) {
+				//console.log('[RMGC] 2nd course decrease: ' + lastResults[lastResults.length - 2]);
+
+				chanceItemName = 'c' + lastResults[lastResults.length - 2];
+				chances[chanceItemName] = (chances[chanceItemName]/100)*20; //makes the odds 20% (20% of 25 are 5)
+
+				if (chances[chanceItemName] < 0) {
+					chances[chanceItemName] = 0;
+				}
+			}
+
+			if (lastResults.length >= 3) {
+				//console.log('[RMGC] 3rd course decrease: ' + lastResults[lastResults.length - 3]);
+
+				chanceItemName = 'c' + lastResults[lastResults.length - 3];
+				chances[chanceItemName] = (chances[chanceItemName]/100)*40; //makes the odds 40% (20% of 25 are 10)
+
+				if (chances[chanceItemName] < 0) {
+					chances[chanceItemName] = 0;
+				}
+			}
+
+			if (lastResults.length >= 4) {
+				//console.log('[RMGC] 4th course decrease: ' + lastResults[lastResults.length - 4]);
+
+				chanceItemName = 'c' + lastResults[lastResults.length - 4];
+				chances[chanceItemName] = (chances[chanceItemName]/100)*60; //makes the odds 60% (20% of 25 are 15)
+
+				if (chances[chanceItemName] < 0) {
+					chances[chanceItemName] = 0;
+				}
+			}
+
+			if (lastResults.length >= 5) {
+				//console.log('[RMGC] 5th course decrease: ' + lastResults[lastResults.length - 5]);
+
+				chanceItemName = 'c' + lastResults[lastResults.length - 5];
+				chances[chanceItemName] = (chances[chanceItemName]/100)*80; //makes the odds 80% (20% of 25 are 20)
+
+				if (chances[chanceItemName] < 0) {
+					chances[chanceItemName] = 0;
+				}
+			}
+
+			//console.log('[RMGC] Chances are: c0: ' + chances.c0 + ', c1: ' + chances.c1 + ', c2: ' + chances.c2 + ', c3: ' + chances.c3 + ', c4: ' + chances.c4 + ', c5: ' + chances.c5);
+
+			var lastForLoopResult = 0;
+			for (let i = 0; i < courseAmount; i++) {
+				chances['c' + i] = chances['c' + i] + lastForLoopResult;
+				lastForLoopResult = chances['c' + i];
+			}
+
+			//console.log('[RMGC] Chances are: c0: ' + chances.c0 + ', c1: ' + chances.c1 + ', c2: ' + chances.c2 + ', c3: ' + chances.c3 + ', c4: ' + chances.c4 + ', c5: ' + chances.c5);
+
+			var randomNum = getRandomInt(lastForLoopResult);
+
+			for (let i = 0; i < courseAmount; i++) {
+				if (randomNum <= chances['c' + i]) {
+					addLastResult(i);
+					return i;
+				}
+			}
+			console.warn('[RMGC] getRandomCourseWeighted() failed.');
+			return false;
+		}
+
+		/* Gets a random course. Avoids the same course twice in a row but pure randomness otherwise.
+
+		Returns:
+			A random number between 0 and 5 that can then be assigned to a course.
+		*/
+		function getRandomCourseSimple () {
+			var num = null;
 			//loop until a new number is found to avoid repeats. 20 is a failsafe to make sure it isn't stuck in an infinite loop.
 			for (let i = 0; i < 20; i++) {
 				num = getRandomInt(6);
 
-				if (num != lastResult) {
-					lastResult = num;
+				if (num != lastResults[lastResults.length - 1]) {
+					addLastResult(num);
 					break;
 				}
+			}
+			return num;
+		}
+
+		//doubleclick prevention
+		var cooldown = false;
+
+		/* Gets a random course and sets the name & background. */
+		function setNewCourse () {
+			//doubleclick prevention
+			//probably only useful to me and my broken mouse that always doubleclicks on single clicks
+			if (cooldown === true) {
+				console.warn('[RMGC] Cooldown');
+				return;
+			} else {
+				cooldown = true;
+				setTimeout(function () { cooldown = false; }, 150);
+			}
+
+
+			var num = null;
+
+			num = getRandomCourseWeighted();
+
+			//failsafe in case weighted course fails.
+			if (num === false) {
+				num = getRandomCourseSimple();
 			}
 
 			switch (num) {
@@ -276,7 +431,7 @@
 			}
 		}
 
-		window.onload = setRandomCourse();
+		window.onload = setNewCourse();
 	</script>
 </body>
 </html>
