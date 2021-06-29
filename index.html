@@ -11,14 +11,14 @@
 	<meta property="og:type" content="website">
 	<meta property="og:title" content="Random Mario Golf Course">
 	<meta property="og:description" content="A simple website to select a random Mario Golf: Super Rush course.">
-	<!--meta property="og:image" content="https://raw.githubusercontent.com/blueYOSHI9000/MarioPartyOverlay/master/img/favicon/icon-120x120.png"-->
+	<meta property="og:image" content="https://raw.githubusercontent.com/blueYOSHI9000/Random-Mario-Golf-Course/master/img/preview.png">
 	<meta property="og:locale" content="en_US">
-	<!--meta property="og:url" content="https://blueyoshi9000.github.io/MarioPartyOverlay"-->
+	<meta property="og:url" content="https://blueyoshi9000.github.io/Random-Mario-Golf-Course/">
 
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="Random Mario Golf Course">
 	<meta name="twitter:description" content="A simple website to select a random Mario Golf: Super Rush course.">
-	<!--meta name="twitter:image" content="https://raw.githubusercontent.com/blueYOSHI9000/MarioPartyOverlay/master/img/favicon/icon-120x120.png"-->
+	<meta name="twitter:image" content="https://raw.githubusercontent.com/blueYOSHI9000/Random-Mario-Golf-Course/master/img/preview.png">
 	<!--meta name="twitter:site" content="@yoshisrc"-->
 	<meta name="twitter:creator" content="@yoshisrc">
 
@@ -78,7 +78,7 @@
 		<div id="credits">
 			All characters, products and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them. <br />
 			Favicon is official art owned by Nintendo, found on mariowiki.com. Other media is created by or inspired by offcially published media by Nintendo. <br />
-			Anything that's not directly credited is either owned by Nintendo or made by a code contributor. Code and list of it's contributors is found publically on github.com.
+			Anything that's not directly credited is either owned by Nintendo or made by a code contributor. Code and list of it's contributors are found publically on github.com/blueYOSHI9000/Random-Mario-Golf-Course.
 		</div>
 	</div>
 
@@ -171,11 +171,14 @@
 
 		#randomImg {
 			display: block;
-			height: 300px;
+			height: 35vh;
+			min-height: 180px;
+			max-height: 450px;
 		}
 
 		#credits {
 			width: 100%;
+			margin-top: 10px;
 			margin-bottom: 2px;
 
 			font-family: arial;
@@ -183,6 +186,13 @@
 			color: #fff;
 			text-align: center;
 			text-shadow: 3px 3px 4px #202020;
+		}
+
+		/* Only needed to avoid credits overlapping with the button. No longer needed once credits get their own place instead of being at the bottom of the page. */
+		@media screen and (max-height: 450px) {
+			#contentContainer {
+				height: auto;
+			}
 		}
 
 		@media only screen and (hover: none) and (pointer: coarse) {
