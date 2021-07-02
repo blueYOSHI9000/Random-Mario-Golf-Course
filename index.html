@@ -61,11 +61,13 @@
 	<div id="contentContainer">
 		<div id="content">
 
-			<div id="courseName">Rookie Course</div>
+			<div id="courseName" onclick="setNewCourse();">Rookie Course</div>
+
+			<div id="windText" onclick="setRandomWindStrength();">Normal Wind</div>
 
 			<div id="flexContainer">
 				<div id="optionsContainer">
-					<span id="button" onclick="setNewCourse()">New course! <br /> <img id="randomImg" src="img/random.png"> </span>
+					<span id="button" onclick="setNewCourse();setRandomWindStrength();">New course! <br /> <img id="randomImg" src="img/random.png"> </span>
 				</div>
 			</div>
 
@@ -123,13 +125,35 @@
 		}
 
 		#courseName {
-			font-size: 3.5rem;
 			padding: 10px 0;
 
 			font-family: arial;
+			font-size: 3.5rem;
 			font-weight: 300;
 			color: #eee;
 			text-shadow: 3px 3px 4px #202020;
+
+			cursor: pointer;
+		-webkit-user-select: none;
+		   -moz-user-select: none;
+			-ms-user-select: none;
+				user-select: none;
+		}
+
+		#windText {
+			padding: 3px 0 10px 0;
+
+			font-family: arial;
+			font-size: 1.9rem;
+			font-weight: 300;
+			color: #eee;
+			text-shadow: 3px 3px 4px #202020;
+
+			cursor: pointer;
+		-webkit-user-select: none;
+		   -moz-user-select: none;
+			-ms-user-select: none;
+				user-select: none;
 		}
 
 		#flexContainer {
@@ -154,11 +178,11 @@
 			font-size: 1.6rem;
 			text-align: start;
 			color: #eee;
-			cursor: pointer;
 
 			background: linear-gradient(90deg, #010101 30%, #565354 90%);
 			box-shadow: 0px 0px 5px 1px #000;
 
+			cursor: pointer;
 		-webkit-user-select: none;
 		   -moz-user-select: none;
 			-ms-user-select: none;
@@ -198,6 +222,9 @@
 		@media only screen and (hover: none) and (pointer: coarse) {
 			#courseName {
 				font-size: 5.5rem;
+			}
+			#windText {
+				font-size: 3.2rem;
 			}
 			#button {
 				font-size: 3rem;
@@ -260,17 +287,17 @@
 		}
 
 		// keeps track of the last 10 courses (note that it's reversed so the latest reuslt is at the end)
-		var lastResults = [];
+		var lastCourseResults = [];
 
-		/* Adds the last result to the lastResults array and keeps it at 10 items.
+		/* Adds the last result to the lastCourseResults array and keeps it at 10 items.
 
 		Args:
-			result (number): Item to be added to lastResults.
+			result (number): Item to be added to lastCourseResults.
 		*/
 		function addLastResult (result) {
-			var len = lastResults.push(result);
+			var len = lastCourseResults.push(result);
 			if (len >= 10) {
-				lastResults.splice(0, 1);
+				lastCourseResults.splice(0, 1);
 			}
 		}
 
@@ -296,16 +323,16 @@
 			var chanceItemName = null;
 
 			//make the last chosen course impossible to get again
-			if (lastResults.length >= 1) {
-				chanceItemName = 'c' + lastResults[lastResults.length - 1];
+			if (lastCourseResults.length >= 1) {
+				chanceItemName = 'c' + lastCourseResults[lastCourseResults.length - 1];
 				chances[chanceItemName] = 0;
 			}
 
 			//decrease odds for the last 4 courses after the last one
-			if (lastResults.length >= 2) {
-				//console.log('[RMGC] 2nd course decrease: ' + lastResults[lastResults.length - 2]);
+			if (lastCourseResults.length >= 2) {
+				//console.log('[RMGC] 2nd course decrease: ' + lastCourseResults[lastCourseResults.length - 2]);
 
-				chanceItemName = 'c' + lastResults[lastResults.length - 2];
+				chanceItemName = 'c' + lastCourseResults[lastCourseResults.length - 2];
 				chances[chanceItemName] = (chances[chanceItemName]/100)*20; //makes the odds 20% (20% of 25 are 5)
 
 				if (chances[chanceItemName] < 0) {
@@ -313,10 +340,10 @@
 				}
 			}
 
-			if (lastResults.length >= 3) {
-				//console.log('[RMGC] 3rd course decrease: ' + lastResults[lastResults.length - 3]);
+			if (lastCourseResults.length >= 3) {
+				//console.log('[RMGC] 3rd course decrease: ' + lastCourseResults[lastCourseResults.length - 3]);
 
-				chanceItemName = 'c' + lastResults[lastResults.length - 3];
+				chanceItemName = 'c' + lastCourseResults[lastCourseResults.length - 3];
 				chances[chanceItemName] = (chances[chanceItemName]/100)*40; //makes the odds 40% (20% of 25 are 10)
 
 				if (chances[chanceItemName] < 0) {
@@ -324,10 +351,10 @@
 				}
 			}
 
-			if (lastResults.length >= 4) {
-				//console.log('[RMGC] 4th course decrease: ' + lastResults[lastResults.length - 4]);
+			if (lastCourseResults.length >= 4) {
+				//console.log('[RMGC] 4th course decrease: ' + lastCourseResults[lastCourseResults.length - 4]);
 
-				chanceItemName = 'c' + lastResults[lastResults.length - 4];
+				chanceItemName = 'c' + lastCourseResults[lastCourseResults.length - 4];
 				chances[chanceItemName] = (chances[chanceItemName]/100)*60; //makes the odds 60% (20% of 25 are 15)
 
 				if (chances[chanceItemName] < 0) {
@@ -335,10 +362,10 @@
 				}
 			}
 
-			if (lastResults.length >= 5) {
-				//console.log('[RMGC] 5th course decrease: ' + lastResults[lastResults.length - 5]);
+			if (lastCourseResults.length >= 5) {
+				//console.log('[RMGC] 5th course decrease: ' + lastCourseResults[lastCourseResults.length - 5]);
 
-				chanceItemName = 'c' + lastResults[lastResults.length - 5];
+				chanceItemName = 'c' + lastCourseResults[lastCourseResults.length - 5];
 				chances[chanceItemName] = (chances[chanceItemName]/100)*80; //makes the odds 80% (20% of 25 are 20)
 
 				if (chances[chanceItemName] < 0) {
@@ -379,7 +406,7 @@
 			for (let i = 0; i < 20; i++) {
 				num = getRandomInt(6);
 
-				if (num != lastResults[lastResults.length - 1]) {
+				if (num != lastCourseResults[lastCourseResults.length - 1]) {
 					addLastResult(num);
 					break;
 				}
@@ -441,6 +468,60 @@
 			}
 		}
 
+		//Saves the last wind strength
+		var lastWindResult = 99;
+
+		/* Sets Wind text.
+
+		Args:
+			wind (string): Wind strength written out. The current wind text is replaced by this string with no modifications made to it.
+		*/
+		function setWindText (wind) {
+			document.getElementById('windText').innerText = wind;
+			console.log('[RMGC] Set Wind to "' + wind + '".');
+		}
+
+		/* Sets the Wind text color.
+
+		Args:
+			color (string): The color in CSS format so it can be directly passed on without modifying it. This will likely be something like '#75e8e8'.
+		*/
+		function setWindColor (color) {
+			document.getElementById('windText').style.color = color;
+		}
+
+		/* Sets a random wind strength. Avoids direct repeats, otherwise pure randomness. */
+		function setRandomWindStrength (avoidRepeat) {
+			//loop until a new number is found to avoid repeats. 20 is a failsafe to make sure it isn't stuck in an infinite loop.
+			for (let i = 0; i < 20; i++) {
+				num = getRandomInt(4);
+
+				if (num != lastWindResult) {
+					lastWindResult = num;
+					break;
+				}
+			}
+
+			switch (num) {
+				case 0:
+					setWindText('Light Wind');
+					setWindColor('#75e8e8');
+					break;
+				case 1:
+					setWindText('Normal Wind');
+					setWindColor('#fff03e');
+					break;
+				case 2:
+					setWindText('Strong Wind');
+					setWindColor('#fba740');
+					break;
+				case 3:
+					setWindText('Strongest Wind');
+					setWindColor('#ea0b49');
+					break;
+			}
+		}
+
 		/* Preloads an image.
 
 		Args:
@@ -462,6 +543,7 @@
 		}
 
 		window.onload = setNewCourse();
+		window.onload = setRandomWindStrength();
 		window.onload = preloadAllImages();
 	</script>
 </body>
