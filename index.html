@@ -314,11 +314,12 @@
 				c2: 25,
 				c3: 25,
 				c4: 25,
-				c5: 25
+				c5: 25,
+				c6: 25
 			};
 
 			//amount of courses - used to loop through chances
-			var courseAmount = 6;
+			var courseAmount = 7;
 
 			var chanceItemName = null;
 
@@ -329,6 +330,7 @@
 			}
 
 			//decrease odds for the last 4 courses after the last one
+
 			if (lastCourseResults.length >= 2) {
 				//console.log('[RMGC] 2nd course decrease: ' + lastCourseResults[lastCourseResults.length - 2]);
 
@@ -464,6 +466,10 @@
 					setCourseName('Bowser Highlands');
 					setCourseBackground('6-Bowser_Highlands.png');
 					break;
+				case 6:
+					setCourseName('New Donk City');
+					setCourseBackground('7-New_Donk_City.png');
+					break;
 
 			}
 		}
@@ -540,6 +546,7 @@
 			preloadImage('img/4-Balmy_Dunes.png');
 			preloadImage('img/5-Wildweather_Woods.png');
 			preloadImage('img/6-Bowser_Highlands.png');
+			preloadImage('img/7-New_Donk_City.png');
 		}
 
 		window.onload = setNewCourse();
